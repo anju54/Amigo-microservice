@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -24,6 +26,9 @@ public class Country {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "CountryId")
 	private Integer countryId;
+	
+//	@OneToOne(mappedBy = "country")
+//	private Address address;
 
 	@Column(name = "CountryName")
 	private String countryName;
