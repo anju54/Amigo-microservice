@@ -1,5 +1,7 @@
 package com.amigo.employeeservice.serviceImpl;
 
+import java.util.Optional;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.amigo.employeeservice.dto.RegistrationDTO;
 import com.amigo.employeeservice.entities.User;
+import com.amigo.employeeservice.exception.EntityNotFound;
 import com.amigo.employeeservice.repository.UserRepository;
 import com.amigo.employeeservice.service.UserService;
 import com.amigo.employeeservice.util.EmployeeCodeGenerator;
@@ -22,10 +25,18 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	public EmployeeCodeGenerator employeeCodeGenerator;
 	
+	/**
+	 * Method for getting user by user id
+	 */
 	@Override
-	public void getEmployeeById(Long id) {
+	public User getEmployeeById(int id) throws EntityNotFound {
 		
-		
+		Optional<User> opUser = userRepository.findById(id);
+		User user = opUser.get();
+		if(opUser.isEmpty()) {
+			throw new EntityNotFound("User not found");
+		}
+		return user;
 	}
 
 	/**
@@ -35,16 +46,26 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public int getLastUserId() {
 		User user = userRepository.findTopByOrderByIdDesc();
-		int id = user.getId();
+		int id = 0;
+		if(user!=null)
+			id = user.getId();
 		return id;
 	}
 
+	/**
+	 * Method for saving user 
+	 */
 	@Override
 	public User saveUser(RegistrationDTO registrationDTO) {
+		
+		logger.info("User saving request has started...");
 		
 		User user = registrationToEmployeeModelMapper(registrationDTO);
 		String employeeCode = employeeCodeGenerator.getNextEmployeeCode();
 		user.setEmployeeCode(employeeCode);
+		
+		String fullName = registrationDTO.getFirstName()+ " " + registrationDTO.getMiddleName()+" " + registrationDTO.getLastName();
+		user.setFirstName(fullName);
 		
 		return userRepository.save(user);
 	}
