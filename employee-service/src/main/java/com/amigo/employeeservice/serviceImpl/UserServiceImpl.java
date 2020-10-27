@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService{
 		
 		Optional<User> opUser = userRepository.findById(id);
 		User user = opUser.get();
-		if(opUser.isEmpty()) {
+		if(!opUser.isPresent()) {
 			throw new EntityNotFound("User not found");
 		}
 		return user;
@@ -65,13 +65,13 @@ public class UserServiceImpl implements UserService{
 		user.setEmployeeCode(employeeCode);
 		
 		String fullName = registrationDTO.getFirstName()+ " " + registrationDTO.getMiddleName()+" " + registrationDTO.getLastName();
-		user.setFirstName(fullName);
+		user.setFullName(fullName);
 		
 		return userRepository.save(user);
 	}
 	
 	/**
-	 * Dto to modal mapper
+	 * DTO to modal Mapper
 	 * @param registrationDTO
 	 * @param user
 	 * @return
