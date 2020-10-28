@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amigo.employeeservice.constants.MessagingConstants;
 import com.amigo.employeeservice.dto.RegistrationDTO;
+import com.amigo.employeeservice.dto.Response;
 import com.amigo.employeeservice.entities.User;
 import com.amigo.employeeservice.exception.EntityNotFound;
 import com.amigo.employeeservice.service.UserService;
@@ -27,7 +28,12 @@ public class UserController {
 
 	@PostMapping(value = "/registration")
 	public User registration(@RequestBody RegistrationDTO registrationDTO){
+		
+		Response response = new Response();
+		
+		response.setMessage("User successfully registered!!");
 
+		template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,response);
 		return userService.saveUser(registrationDTO);
 	}
 	

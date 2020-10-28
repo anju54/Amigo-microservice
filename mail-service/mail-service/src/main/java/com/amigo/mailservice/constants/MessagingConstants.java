@@ -1,4 +1,4 @@
-package com.amigo.employeeservice.constants;
+package com.amigo.mailservice.constants;
 
 public class MessagingConstants {
 	
