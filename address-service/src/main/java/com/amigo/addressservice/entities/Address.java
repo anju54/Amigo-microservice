@@ -36,10 +36,6 @@ public class Address {
 	@OneToOne
 	@JoinColumn(name = "CityId", referencedColumnName = "CityId")
 	private City city;
-	
-	@ManyToOne
-	@JoinColumn(name = "userId")
-	private User user;
 
 	@Column(name = "PostalCode")
 	private String postalCode;
@@ -131,14 +127,4 @@ public class Address {
 	public void setRecordUpdated(Date recordUpdated) {
 		this.recordUpdated = recordUpdated;
 	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-	
-	
 }
