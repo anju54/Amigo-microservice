@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
 	 public SimpleMailMessage registrationSuccessMail(String email,String firstName) {
 		 
 		 String prefix = "Dear "+ firstName +"\n" +"Welcome !!" + "\n";
-		 String body = "You account for amigo shopee has been created succefully!" ;
+		 String body = "You account for amigo shopee has been created successfully!" ;
 		 
 		 String subject = "Confirmation email" ;
 		 

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.amigo.employeeservice.dto.RegistrationDTO;
 import com.amigo.employeeservice.entities.User;
+import com.amigo.employeeservice.exception.EntityAlreadyExists;
 import com.amigo.employeeservice.exception.EntityNotFound;
 import com.amigo.employeeservice.repository.UserRepository;
 import com.amigo.employeeservice.service.UserService;
@@ -54,20 +55,36 @@ public class UserServiceImpl implements UserService{
 
 	/**
 	 * Method for saving user 
+	 * @throws EntityAlreadyExists 
 	 */
 	@Override
-	public User saveUser(RegistrationDTO registrationDTO) {
+	public User saveUser(RegistrationDTO registrationDTO) throws EntityAlreadyExists {
 		
 		logger.info("User saving request has started...");
 		
-		User user = registrationToEmployeeModelMapper(registrationDTO);
-		String employeeCode = employeeCodeGenerator.getNextEmployeeCode();
-		user.setEmployeeCode(employeeCode);
+		User existingUser = checkForDuplicateUser(registrationDTO.getEmail());
 		
-		String fullName = registrationDTO.getFirstName()+ " " + registrationDTO.getMiddleName()+" " + registrationDTO.getLastName();
-		user.setFullName(fullName);
+		if(existingUser==null) {
+			User user = registrationToEmployeeModelMapper(registrationDTO);
+			String employeeCode = employeeCodeGenerator.getNextEmployeeCode();
+			user.setEmployeeCode(employeeCode);
+			
+			String fullName = registrationDTO.getFirstName()+ " " + registrationDTO.getMiddleName()+" " + registrationDTO.getLastName();
+			user.setFullName(fullName);
+			
+			return userRepository.save(user);
+		}
+		return null;
+	}
+	
+	private User checkForDuplicateUser(String email) throws EntityAlreadyExists {
 		
-		return userRepository.save(user);
+		User existingUser = userRepository.findByEmail(email);
+		
+		if(existingUser!=null)
+			throw new EntityAlreadyExists("User with this email " +email+ " already exists!");
+		
+		return existingUser;
 	}
 	
 	/**
