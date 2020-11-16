@@ -6,5 +6,5 @@ public interface EmailService {
 
 	SimpleMailMessage constructEmail(String subject, String body,String userEmail /*, UserModel user*/);
 	SimpleMailMessage registrationCredentialEmail( String token,String userEmail);
-	SimpleMailMessage registrationSuccessMail(String email,String firstName);
+	SimpleMailMessage registrationSuccessMail(String email,String firstName,String token,int userId);
 }

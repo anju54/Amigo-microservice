@@ -5,6 +5,7 @@ public class Response<T> {
 	String message;
 	public T t;
 	boolean flag;
+	int userId;
 	
 	public String getMessage() {
 		return message;
@@ -24,4 +25,11 @@ public class Response<T> {
 	public void setFlag(boolean flag) {
 		this.flag = flag;
 	}
+	public int getUserId() {
+		return userId;
+	}
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+	
 }

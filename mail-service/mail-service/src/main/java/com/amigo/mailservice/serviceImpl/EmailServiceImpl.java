@@ -7,6 +7,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 
+import com.amigo.mailservice.constants.MailConstants;
 import com.amigo.mailservice.service.EmailService;
 
 /**
@@ -41,14 +42,15 @@ public class EmailServiceImpl implements EmailService {
 		    return email;
 	 }
 	 
-	 public SimpleMailMessage registrationSuccessMail(String email,String firstName) {
+	 public SimpleMailMessage registrationSuccessMail(String email,String firstName,String token,int userId) {
 		 
-		 String prefix = "Dear "+ firstName +"\n" +"Welcome !!" + "\n";
-		 String body = "You account for amigo shopee has been created successfully!" ;
+		 String prefix = "Dear "+ firstName +"\n" +"Welcome !!" + "\n\t";
+		 String body = "You account for amigo shopee has been created successfully!"  + "\n";
+		 String body1 = "click here to set password  " + MailConstants.RESET_PASSWORD_LINK +"?token="+token+"&id="+userId;
 		 
 		 String subject = "Confirmation email" ;
 		 
-		 return constructEmail(subject, prefix+body, email);
+		 return constructEmail(subject, prefix+body+body1, email);
 	 }
 
 	@Override

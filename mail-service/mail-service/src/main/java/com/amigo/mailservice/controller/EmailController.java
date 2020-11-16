@@ -8,7 +8,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.amigo.mailservice.constants.MessagingConstants;
-import com.amigo.mailservice.dto.Response;
+import com.amigo.mailservice.dto.UserMessage;
 import com.amigo.mailservice.service.EmailService;
 
 @RestController
@@ -23,18 +23,18 @@ public class EmailController {
 	private static final Logger logger = LogManager.getLogger(EmailController.class);
 	
 	@RabbitListener(queues = MessagingConstants.QUEUE)
-	public void consumeMsg(Response res) {
+	public void consumeMsg(UserMessage res) {
 		
-		System.out.print("Msged consumed"+res);
-		System.out.println(res.isFlag());
-		if(res.isFlag())
-			registrationSuccessMail("anju.k302@gmail.com","Anju");
+		System.out.print("Msged consumed....");
+		
+		registrationSuccessMail(res.getEmailId(),res.getFirstName(),res.getResetToken(),res.getUserId());
+		//return res;
 	}
 	
-	private void registrationSuccessMail(String email,String firstName) {
+	private void registrationSuccessMail(String email,String firstName,String token,int userId) {
 		
 		logger.info("Sending registration successful email...");
 		
-		mailSender.send(emailService.registrationSuccessMail(email, firstName));
+		mailSender.send(emailService.registrationSuccessMail(email, firstName,token,userId));
 	}
 }

@@ -8,10 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.amigo.employeeservice.dto.RegistrationDTO;
+import com.amigo.employeeservice.dto.UserMessage;
+import com.amigo.employeeservice.entities.PasswordResetToken;
 import com.amigo.employeeservice.entities.User;
 import com.amigo.employeeservice.exception.EntityAlreadyExists;
 import com.amigo.employeeservice.exception.EntityNotFound;
 import com.amigo.employeeservice.repository.UserRepository;
+import com.amigo.employeeservice.service.PasswordResetTokenService;
 import com.amigo.employeeservice.service.UserService;
 import com.amigo.employeeservice.util.EmployeeCodeGenerator;
 
@@ -24,7 +27,10 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	@Autowired
-	public EmployeeCodeGenerator employeeCodeGenerator;
+	private EmployeeCodeGenerator employeeCodeGenerator;
+	
+	@Autowired
+	private PasswordResetTokenService passwordResetTokenService;
 	
 	/**
 	 * Method for getting user by user id
@@ -58,9 +64,11 @@ public class UserServiceImpl implements UserService{
 	 * @throws EntityAlreadyExists 
 	 */
 	@Override
-	public User saveUser(RegistrationDTO registrationDTO) throws EntityAlreadyExists {
+	public UserMessage saveUser(RegistrationDTO registrationDTO) throws EntityAlreadyExists {
 		
 		logger.info("User saving request has started...");
+		
+		UserMessage userMessage = new UserMessage();
 		
 		User existingUser = checkForDuplicateUser(registrationDTO.getEmail());
 		
@@ -72,7 +80,19 @@ public class UserServiceImpl implements UserService{
 			String fullName = registrationDTO.getFirstName()+ " " + registrationDTO.getMiddleName()+" " + registrationDTO.getLastName();
 			user.setFullName(fullName);
 			
-			return userRepository.save(user);
+			user = userRepository.save(user);
+			
+			logger.info("User has been saved to database with the id "+user.getId());
+			
+			PasswordResetToken passwordResetToken = passwordResetTokenService.createToken(user.getId());
+			userMessage.setResetToken(passwordResetToken.getResetToken());
+			userMessage.setUserId(user.getId());
+			userMessage.setEmailId(user.getEmail());
+			userMessage.setFirstName(fullName);
+			
+			userMessage.setMessage("User has been created successfully!");
+			
+			return userMessage;
 		}
 		return null;
 	}

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.amigo.employeeservice.constants.MessagingConstants;
 import com.amigo.employeeservice.dto.RegistrationDTO;
-import com.amigo.employeeservice.dto.Response;
+import com.amigo.employeeservice.dto.UserMessage;
 import com.amigo.employeeservice.entities.User;
 import com.amigo.employeeservice.exception.EntityAlreadyExists;
 import com.amigo.employeeservice.exception.EntityNotFound;
@@ -28,15 +28,15 @@ public class UserController {
 	private RabbitTemplate template;
 
 	@PostMapping(value = "/registration")
-	public User registration(@RequestBody RegistrationDTO registrationDTO) throws EntityAlreadyExists{
-		
-		Response response = new Response();
-		
-		response.setMessage("User successfully registered!!");
-		response.setFlag(true);
+	public UserMessage registration(@RequestBody RegistrationDTO registrationDTO) throws EntityAlreadyExists{
 
-		template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,response);
-		return userService.saveUser(registrationDTO);
+		UserMessage userMessage = new UserMessage();
+		userMessage = userService.saveUser(registrationDTO);
+		
+		// Send confirmation to rabbit mq to send email to user
+		template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,userMessage);
+		
+		return userMessage;
 	}
 	
 	@GetMapping("/{id}")
