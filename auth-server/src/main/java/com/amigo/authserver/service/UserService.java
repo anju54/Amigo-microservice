@@ -2,8 +2,8 @@ package com.amigo.authserver.service;
 
 import com.amigo.authserver.entities.User;
 
-public interface AuthService {
+public interface UserService {
 	
-	void setPassword(User user);
+	User saveUserLoginDetail(User user);
 
 }
