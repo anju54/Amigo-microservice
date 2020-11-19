@@ -120,7 +120,6 @@ public class UserServiceImpl implements UserService{
 		user.setMiddleName(registrationDTO.getMiddleName());
 		user.setEmail(registrationDTO.getEmail());
 		user.setGender(registrationDTO.getGender());
-		user.setPassword(registrationDTO.getPassword());
 		user.setMobileNumber(registrationDTO.getMobileNumber());
 		
 		return user;

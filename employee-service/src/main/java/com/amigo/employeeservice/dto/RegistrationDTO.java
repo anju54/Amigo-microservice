@@ -8,7 +8,6 @@ public class RegistrationDTO {
 	private String gender;
 	private String mobileNumber;
 	private String email;
-	private String password;
 
 	public String getFirstName() {
 		return firstName;
@@ -58,11 +57,5 @@ public class RegistrationDTO {
 		this.email = email;
 	}
 
-	public String getPassword() {
-		return password;
-	}
 
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }
