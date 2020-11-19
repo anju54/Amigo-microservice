@@ -46,7 +46,7 @@ public class EmailServiceImpl implements EmailService {
 		 
 		 String prefix = "Dear "+ firstName +"\n" +"Welcome !!" + "\n\t";
 		 String body = "You account for amigo shopee has been created successfully!"  + "\n";
-		 String body1 = "click here to set password  " + MailConstants.RESET_PASSWORD_LINK +"?token="+token+"&id="+userId;
+		 String body1 = "click here to set password  " + MailConstants.SET_PASSWORD_LINK +"?token="+token+"&id="+userId;
 		 
 		 String subject = "Confirmation email" ;
 		 
@@ -54,9 +54,15 @@ public class EmailServiceImpl implements EmailService {
 	 }
 
 	@Override
-	public SimpleMailMessage registrationCredentialEmail(String token, String userEmail) {
-		// TODO Auto-generated method stub
-		return null;
+	public SimpleMailMessage passwordResetSuccefullEmail(String userEmail) {
+		
+		logger.info("Trying to send set password confirm mail...");
+		
+		String prefix = "Dear "+"\n" +"Welcome !!" + "\n\t";
+		String body = "Your password for amigoshopee has been set succefully!"  + "\n";
+		
+		String subject = "Password has set" ;
+		return constructEmail(subject, prefix+body, userEmail);
 	}
 	 
 	 /**

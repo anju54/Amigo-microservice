@@ -22,7 +22,7 @@ public class EmailController {
 	
 	private static final Logger logger = LogManager.getLogger(EmailController.class);
 	
-	@RabbitListener(queues = MessagingConstants.QUEUE)
+	@RabbitListener(queues = MessagingConstants.REGISTRATION_QUEUE)
 	public void consumeMsg(UserMessage res) {
 		
 		System.out.print("Msged consumed....");

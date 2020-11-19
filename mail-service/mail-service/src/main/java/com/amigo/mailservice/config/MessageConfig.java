@@ -15,12 +15,23 @@ public class MessageConfig {
 
 	@Bean
 	Queue queue(){
-		return new Queue(MessagingConstants.QUEUE,false);
+		return new Queue(MessagingConstants.REGISTRATION_QUEUE,false);
+	}
+	
+	@Bean
+	Queue queue1(){
+		return new Queue(MessagingConstants.SETPASSWORD_QUEUE,false);
 	}
 	
 	@Bean
 	DirectExchange exchange() {
 		return new DirectExchange(MessagingConstants.EXCHANGE);
+	}
+	
+	@Bean
+	Binding binding1(DirectExchange exchange) {
+		
+		return BindingBuilder.bind(queue1()).to(exchange).with(MessagingConstants.SET_PASSWORD_KEY);
 	}
 	
 	@Bean
