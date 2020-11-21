@@ -38,12 +38,23 @@ public class UserServiceImpl implements UserService{
 	@Override
 	public User getEmployeeById(int id) throws EntityNotFound {
 		
-		Optional<User> opUser = userRepository.findById(id);
-		User user = opUser.get();
-		if(!opUser.isPresent()) {
+		try {
+			Optional<User> opUser = userRepository.findById(id);
+			
+			if(!opUser.isPresent())
+				throw new EntityNotFound("User not found");
+			
+			User user = opUser.get();
+			return user;	
+		}
+		catch (EntityNotFound e) {
 			throw new EntityNotFound("User not found");
 		}
-		return user;
+		catch (Exception e) {
+			logger.info(e.getMessage());
+			logger.info("In main exception");
+		}
+		return null;
 	}
 
 	/**

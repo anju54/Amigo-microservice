@@ -43,8 +43,7 @@ public class UserController {
 	public User findUserByUserId(@PathVariable("id") int id) throws EntityNotFound {
 		
 		User user = userService.getEmployeeById(id);
-		System.out.println(user.getFullName());
-		template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,user);
+		//template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,user);
 		return user;
 	}
 	
