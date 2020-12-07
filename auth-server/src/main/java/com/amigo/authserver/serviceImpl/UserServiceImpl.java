@@ -15,6 +15,10 @@ public class UserServiceImpl implements UserService{
 	
 	public User saveUserLoginDetail(User user) {
 		
+//		User user = new User();
+//		user.setEmail(userMsg.getEmailId());
+//		user.setPassword("");
+		
 		return userRepository.save(user);
 	}
 

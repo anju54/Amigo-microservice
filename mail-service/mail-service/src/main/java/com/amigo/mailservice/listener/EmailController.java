@@ -1,4 +1,4 @@
-package com.amigo.mailservice.controller;
+package com.amigo.mailservice.listener;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;

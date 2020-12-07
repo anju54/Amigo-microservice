@@ -5,11 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.amigo.authserver.constants.MessagingConstants;
 import com.amigo.authserver.entities.User;
 import com.amigo.authserver.service.AuthService;
-import com.amigo.authserver.constants.MessagingConstants;
 
 @RestController
 @RequestMapping("/auth-server")
@@ -22,7 +23,10 @@ public class AuthController {
 	private RabbitTemplate template;
 	
 	@PostMapping("/set-password/")
-	public void setPassword(@RequestBody User user) {
+	public void setPassword(@RequestParam("token") String token, @RequestParam("id") int userId, 
+			@RequestBody User user) {
+		
+		boolean res = authService.validatePasswordResetToken(userId,token);
 		
 		authService.setPassword(user);
 		
