@@ -1,0 +1,13 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/anju54/amigo-configuration-store.git
+          search-paths:
+          - 'config-repo/*-service' 
