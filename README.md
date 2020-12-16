@@ -11,3 +11,8 @@ Euerka server runs on port : 8761
 Rabbitmq is running through docker container.
 
 Spring cloud gateway is configured on port : 8080
+
+Spring cloud gateway and employee-service is now fetching configuration from config server.
+
+Config server is running on port : 8001.
+Config server is the configuration store used for dynamically fetching the required config for diffrenet microservices from git.
