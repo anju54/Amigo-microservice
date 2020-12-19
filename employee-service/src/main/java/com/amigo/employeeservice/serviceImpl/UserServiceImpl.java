@@ -1,5 +1,6 @@
 package com.amigo.employeeservice.serviceImpl;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
@@ -32,11 +33,17 @@ public class UserServiceImpl implements UserService{
 	@Autowired
 	private PasswordResetTokenService passwordResetTokenService;
 	
+	
+	public List<User> getAllUser(){
+		
+		return userRepository.findAll();	
+	}
+	
 	/**
 	 * Method for getting user by user id
 	 */
 	@Override
-	public User getEmployeeById(int id) throws EntityNotFound {
+	public User getUserById(int id) throws EntityNotFound {
 		
 		try {
 			Optional<User> opUser = userRepository.findById(id);

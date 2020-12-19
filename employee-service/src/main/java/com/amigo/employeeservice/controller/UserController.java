@@ -1,5 +1,7 @@
 package com.amigo.employeeservice.controller;
 
+import java.util.List;
+
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -42,9 +44,14 @@ public class UserController {
 	@GetMapping("/{id}")
 	public User findUserByUserId(@PathVariable("id") int id) throws EntityNotFound {
 		
-		User user = userService.getEmployeeById(id);
+		User user = userService.getUserById(id);
 		//template.convertAndSend(MessagingConstants.EXCHANGE,MessagingConstants.ROUTING_KEY,user);
 		return user;
+	}
+	
+	@GetMapping("/all")
+	public List<User> listAllUser(){
+		 return userService.getAllUser();
 	}
 	
 
